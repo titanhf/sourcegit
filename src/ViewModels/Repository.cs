@@ -76,6 +76,9 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
+                    if (value == 0)
+                        ExpandDashboardBranches();
+
                     OnPropertyChanged(nameof(IsDashboardVisible));
                     OnPropertyChanged(nameof(IsWorkingCopyVisible));
                     OnPropertyChanged(nameof(IsStashesVisible));
@@ -435,6 +438,10 @@ namespace SourceGit.ViewModels
 
         public void Open()
         {
+            _expandBranchesOnFirstRefresh = true;
+            IsLocalBranchGroupExpanded = true;
+            IsRemoteGroupExpanded = true;
+
             try
             {
                 _watcher = new Models.Watcher(this, FullPath, _gitCommonDir);
@@ -1128,8 +1135,16 @@ namespace SourceGit.ViewModels
                     Remotes = remotes;
                     Branches = branches;
                     CurrentBranch = branches.Find(x => x.IsCurrent);
-                    LocalBranchTrees = builder.Locals;
-                    RemoteBranchTrees = builder.Remotes;
+                    if (_expandBranchesOnFirstRefresh)
+                    {
+                        ExpandDashboardBranches();
+                        _expandBranchesOnFirstRefresh = false;
+                    }
+                    else
+                    {
+                        LocalBranchTrees = builder.Locals;
+                        RemoteBranchTrees = builder.Remotes;
+                    }
 
                     ValidateHistoryFilters(true);
 
@@ -1637,6 +1652,37 @@ namespace SourceGit.ViewModels
             return null;
         }
 
+        private void ExpandDashboardBranches()
+        {
+            IsLocalBranchGroupExpanded = true;
+            IsRemoteGroupExpanded = true;
+
+            var builder = new BranchTreeNode.Builder(_uiStates.LocalBranchSortMode, _uiStates.RemoteBranchSortMode);
+            builder.Run(_branches, _remotes, true);
+
+            // Remember every folder so a normal refresh preserves the initial expansion.
+            _uiStates.ExpandedBranchNodesInSideBar.Clear();
+            RememberExpandedNodes(builder.Locals);
+            RememberExpandedNodes(builder.Remotes);
+
+            builder = BuildBranchTree(_branches, _remotes);
+
+            LocalBranchTrees = builder.Locals;
+            RemoteBranchTrees = builder.Remotes;
+
+            void RememberExpandedNodes(List<BranchTreeNode> nodes)
+            {
+                foreach (var node in nodes)
+                {
+                    if (node.IsBranch)
+                        continue;
+
+                    _uiStates.ExpandedBranchNodesInSideBar.Add(node.Path);
+                    RememberExpandedNodes(node.Children);
+                }
+            }
+        }
+
         private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes, bool validateExpandedNodes = true)
         {
             var builder = new BranchTreeNode.Builder(_uiStates.LocalBranchSortMode, _uiStates.RemoteBranchSortMode);
@@ -1935,6 +1981,7 @@ namespace SourceGit.ViewModels
         private List<Models.Remote> _remotes = [];
         private List<Models.Branch> _branches = [];
         private Models.Branch _currentBranch = null;
+        private bool _expandBranchesOnFirstRefresh = true;
         private List<BranchTreeNode> _localBranchTrees = [];
         private List<BranchTreeNode> _remoteBranchTrees = [];
         private List<Worktree> _worktrees = [];

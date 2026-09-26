@@ -282,6 +282,12 @@
               </TextBox>
 
               <Grid Grid.Row="1" x:Name="LeftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto" SizeChanged="OnLeftSidebarSizeChanged">
+                <Grid.Styles>
+                  <Style Selector="TextBlock.group_header_label">
+                    <Setter Property="Foreground" Value="{DynamicResource Brush.RepositoryHeader}"/>
+                  </Style>
+                </Grid.Styles>
+
                 <!-- Local Branches -->
                 <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
                   <Grid ColumnDefinitions="16,*,Auto">
