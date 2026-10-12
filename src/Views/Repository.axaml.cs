@@ -475,6 +475,14 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnCleanupLocalBranches(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                await repo.CleanupLocalBranchesAsync();
+
+            e.Handled = true;
+        }
+
         private async void OnPruneWorktrees(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

@@ -1447,6 +1447,15 @@ namespace SourceGit.ViewModels
                 ShowPopup(new DeleteMultipleBranches(this, branches, isLocal));
         }
 
+        public async Task CleanupLocalBranchesAsync()
+        {
+            if (!CanCreatePopup())
+                return;
+
+            var merged = await new Commands.QueryMergedBranches(FullPath, "HEAD").GetResultAsync();
+            ShowPopup(new CleanupLocalBranches(this, merged));
+        }
+
         public void MergeMultipleBranches(List<Models.Branch> branches)
         {
             if (CanCreatePopup())

@@ -982,10 +982,20 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
+                var cleanup = new MenuItem();
+                cleanup.Header = App.Text("CleanupLocalBranches");
+                cleanup.Icon = this.CreateMenuIcon("Icons.Clean");
+                cleanup.Click += async (_, e) =>
+                {
+                    await repo.CleanupLocalBranchesAsync();
+                    e.Handled = true;
+                };
+
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(editDescription);
                 menu.Items.Add(rename);
                 menu.Items.Add(delete);
+                menu.Items.Add(cleanup);
             }
 
             var createBranch = new MenuItem();

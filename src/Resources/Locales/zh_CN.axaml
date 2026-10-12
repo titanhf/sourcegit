@@ -135,6 +135,15 @@
   <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">提交变化</x:String>
   <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">对比的父提交 ：</x:String>
   <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">通常你不能对一个合并进行挑选，因为你不知道合并的哪一边应该被视为主线。这个选项指定了作为主线的父提交，允许挑选相对于该提交的修改。</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches" xml:space="preserve">清理本地分支</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.Empty" xml:space="preserve">没有可清理的本地分支</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.IncludeUnpushed" xml:space="preserve">同时包含已合并到当前分支、但从未推送（无上游）的本地分支</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.NoUpstream" xml:space="preserve">无上游</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.SelectAll" xml:space="preserve">全选</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.Tip" xml:space="preserve">上游分支已被删除的本地分支。当前分支以及被工作树检出的分支不在此列。</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.UnselectAll" xml:space="preserve">全不选</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.Unmerged" xml:space="preserve">未合并，将强制删除</x:String>
+  <x:String x:Key="Text.CleanupLocalBranches.UpstreamGone" xml:space="preserve">上游已删除</x:String>
   <x:String x:Key="Text.ClearStashes" xml:space="preserve">丢弃贮藏确认</x:String>
   <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">您正在丢弃所有的贮藏，一经操作，无法回退，是否继续？</x:String>
   <x:String x:Key="Text.Clone" xml:space="preserve">克隆远程仓库</x:String>
